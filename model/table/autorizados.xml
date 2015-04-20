@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : autorizados.xml
+    Description:
+        Estructura de la tabla autorizados.
+-->
+<tabla>
+    <columna>
+        <nombre>autorizado_id</nombre>
+        <tipo>serial</tipo>
+        <nulo>NO</nulo>
+        <defecto>nextval('autorizados_autorizado_id_seq'::regclass)</defecto>
+    </columna>
+    <columna>
+        <nombre>autorizado_cifnif</nombre>
+        <tipo>varchar(20)</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <columna>
+        <nombre>autorizado_nombre</nombre>
+        <tipo>varchar(120)</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <columna>
+        <nombre>autorizado_telefono</nombre>
+        <tipo>varchar(30)</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <columna>
+        <nombre>autorizado_concepto</nombre>
+        <tipo>text</tipo>
+        <nulo>YES</nulo>
+    </columna>
+    <columna>
+        <nombre>autorizado_fecha</nombre>
+        <tipo>date</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <columna>
+        <nombre>autorizado_codproveedor</nombre>
+        <tipo>varchar(6)</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <columna>
+        <nombre>autorizado_codcliente</nombre>
+        <tipo>varchar(6)</tipo>
+        <nulo>NO</nulo>
+    </columna>
+    <restriccion>
+        <nombre>autorizados_pkey</nombre>
+        <consulta>PRIMARY KEY (autorizado_id)</consulta>
+    </restriccion>
+</tabla>

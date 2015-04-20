@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es" >
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+   <title>{$fsc->page->title} &lsaquo; {$fsc->empresa->nombre}</title>
+   <meta name="description" content="Facturacion es un software de facturación y contabilidad para pymes. Es software libre bajo licencia GNU/AGPL." />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <link rel="shortcut icon" href="view/img/favicon.ico" />
+   <link rel="stylesheet" href="{$fsc->user->css}" />
+   <link rel="stylesheet" href="view/css/datepicker.css" />
+   <link rel="stylesheet" href="view/css/custom.css" />
+   <script type="text/javascript" src="view/js/jquery-2.1.1.min.js"></script>
+   <script type="text/javascript" src="view/js/bootstrap.min.js"></script>
+   <script type="text/javascript" src="view/js/bootstrap-datepicker.js" charset="UTF-8"></script>
+   <script type="text/javascript" src="view/js/jquery.autocomplete.min.js"></script>
+   <script type="text/javascript" src="view/js/base.js"></script>
+   <script type="text/javascript">
+      function show_precio(precio)
+      {
+         {if condition="FS_POS_DIVISA=='right'"}
+         return number_format(precio, {#FS_NF0#}, '{#FS_NF1#}', '{#FS_NF2#}')+' {$fsc->simbolo_divisa()}';
+         {else}
+         return '{$fsc->simbolo_divisa()}'+number_format(precio, {#FS_NF0#}, '{#FS_NF1#}', '{#FS_NF2#}');
+         {/if}
+      }
+      function show_numero(numero)
+      {
+         return number_format(numero, {#FS_NF0#}, '{#FS_NF1#}', '{#FS_NF2#}');
+      }
+      
+      $(document).ready(function() {
+        $("#b_nuevo_autorizado").click(function(event) {
+            event.preventDefault();
+            $("#modal_nuevo_autorizado").modal('show');
+            document.f_nuevo_autorizado.autorizado_cifnif.focus();
+        });       
+      });
+   
+      function delete_autorizado(id)
+      {
+        if( confirm("¿Realmente desea eliminar Autorizado ("+id+")?") )
+            window.location.href = '{$fsc->url()}&delete_autorizado='+id+'#autorizados';
+      }
+   </script>
+   {loop="$fsc->extensions"}
+      {if condition="$value->type=='head'"}{$value->text}{/if}
+   {/loop}
+</head>
+<body>
+   {if="$fsc->get_errors()"}
+   <div class="alert alert-danger hidden-print">
+      <ul>{loop="$fsc->get_errors()"}<li>{$value}</li>{/loop}</ul>
+   </div>
+   {/if}
+   
+   {if="$fsc->get_messages()"}
+   <div class="alert alert-success hidden-print">
+      <ul>{loop="$fsc->get_messages()"}<li>{$value}</li>{/loop}</ul>
+   </div>
+   {/if}
+   
+   {if="$fsc->get_advices()"}
+   <div class="alert alert-info hidden-print">
+      <ul>{loop="$fsc->get_advices()"}<li>{$value}</li>{/loop}</ul>
+   </div>
+   {/if}
+   
+ 
+   <div class="table-responsive pseudotab_cli" id="div_autorizados">
+           <table class="table table-hover">
+               <thead>
+                   <tr>
+                       <th class="text-left">CIF/NIF</th>                         
+                       <th class="text-left">Nombre Autorizado</th>
+                       <th class="text-left">Teléfono</th>
+                       <th class="text-left">Concepto</th>
+                       <th class="text-right">Fecha alta</th>
+                       <th class="text-right">Acciones</th>
+                   </tr>
+               </thead>
+               {loop="$fsc->autorizados_select"}
+               <tr>
+                   <td class="text-left">{$value->autorizado_cifnif}</td>
+                   <td class="text-left">{$value->autorizado_nombre}</td>
+                   <td class="text-left">{$value->autorizado_telefono}</td>
+                   <td class="text-left">{$value->autorizado_concepto}</td>
+                   <td class="text-right">{$value->autorizado_fecha}</td>
+                   <td class="text-right">
+                       <a href="#" class="btn btn-xs btn-danger" title="Eliminar" onclick="delete_autorizado('{$value->autorizado_id}')">
+                           <span class="glyphicon glyphicon-trash"></span>
+                       </a>
+                   </td>                     
+               </tr>
+               {else}
+               <tr class="bg-warning">
+                   <td colspan="6">Sin autorizados...</td>
+               </tr>
+               {/loop}
+               <tr>
+                   <td colspan="6" class="text-center">
+                       <a class="btn btn-sm btn-block btn-success" id="b_nuevo_autorizado" href="#">Crear nuevo autorizado...</a>
+                   </td>
+               </tr>
+           </table>
+   </div>    
+   
+<form name="f_nuevo_autorizado" action="{$fsc->url()}" method="post" class="form">
+   <div class="modal" id="modal_nuevo_autorizado">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h4 class="modal-title">Nuevo Autorizado</h4>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                  CIF/NIF:
+                  <input class="form-control" type="text" name="autorizado_cifnif" maxlength="20" placeholder="CIF/NIF autorizado" autocomplete="off"/>
+               </div>
+               <div class="form-group">
+                  Nombre:*
+                  <input class="form-control" type="text" name="autorizado_nombre" maxlength="120" placeholder="Nombre autorizado" autocomplete="off"/>
+               </div>
+               <div class="form-group">
+                  Teléfono:
+                  <input class="form-control" type="text" name="autorizado_telefono" maxlength="30" placeholder="Teléfono autorizado" autocomplete="off"/>
+               </div>
+               <div class="form-group">
+                  Concepto:
+                  <input class="form-control" type="text" name="autorizado_concepto" placeholder="Vinculación con proveedor" autocomplete="off"/>
+               </div>
+               <div class="form-group">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                  Fecha Alta:
+                  <input class="form-control datepicker" type="text" name="autorizado_fecha" placeholder="Fecha (si no se indica, por defecto HOY)" autocomplete="off"/>
+               </div>                
+            </div>
+            <div class="modal-footer">
+               <button class="btn btn-sm btn-primary" type="submit" onclick="this.disabled=true;this.form.submit();" title="Guardar">
+                  <span class="glyphicon glyphicon-floppy-disk"></span>
+                  &nbsp; Guardar
+                </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</form>
+   
+</body>
+</html>
