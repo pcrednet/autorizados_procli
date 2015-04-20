@@ -25,16 +25,12 @@
  */
 
 require_model('autorizados.php');
-require_model('cliente.php');
-require_model('proveedor.php');
 
 class autorizados_procli extends fs_controller {
 
     public $allow_delete;
     public $autorizados;
     public $autorizados_select;
-    public $proveedor;
-    public $cliente;
 
     public function __construct() {
         parent::__construct(__CLASS__, 'Autorizados', 'compras', FALSE, FALSE);
@@ -46,25 +42,17 @@ class autorizados_procli extends fs_controller {
 
         /// ¿El usuario tiene permiso para eliminar autorizados?
         $this->allow_delete = $this->user->allow_delete_on(__CLASS__);
+        
+        $this->autorizados = new autorizados();       
 
         if (isset($_GET['tipo']) AND isset($_GET['cod'])) {
-            $this->autorizados = new autorizados();
-            
-            //Primero cargamos el proveedor o cliente segun sea
-            if ($_GET['tipo'] == 'proveedor') {
-                $proveedor = new proveedor();
-                $this->proveedor = $proveedor->get($_GET['cod']);
-            } else {
-                $cliente = new cliente();
-                $this->cliente = $cliente->get($_GET['cod']);
-            }
-
             /// añadir un autorizado para este proveedor o cliente
             if (isset($_POST['autorizado_nombre'])) {
-                if ($_GET['tipo'] == 'proveedor')
-                    $this->autorizados->autorizado_codproveedor = $this->proveedor->codproveedor;
-                else
-                    $this->autorizados->autorizado_codcliente = $this->cliente->codcliente;
+                if ($_GET['tipo'] == 'proveedor'){
+                    $this->autorizados->autorizado_codproveedor = $_GET['cod'];
+                }else{
+                    $this->autorizados->autorizado_codcliente = $_GET['cod'];
+                }
                 $this->autorizados->autorizado_cifnif = $_POST['autorizado_cifnif'];
                 $this->autorizados->autorizado_nombre = $_POST['autorizado_nombre'];
                 $this->autorizados->autorizado_telefono = $_POST['autorizado_telefono'];
