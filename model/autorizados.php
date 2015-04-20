@@ -94,8 +94,10 @@ class autorizados extends fs_model
       $this->autorizado_concepto = $this->no_html($this->autorizado_concepto);
 
       
-      if( !preg_match("/^[A-Z0-9]{1,6}$/i", $this->autorizado_codcliente))
-        $this->new_error_msg("Código de proveedor/cliente no válido.");
+      if( !preg_match("/^[A-Z0-9]{1,6}$/i", $this->autorizado_codcliente) AND is_null($this->autorizado_codproveedor))
+        $this->new_error_msg("Código de cliente no válido.");
+      else if( !preg_match("/^[A-Z0-9]{1,6}$/i", $this->autorizado_codproveedor) AND is_null($this->autorizado_codcliente))
+        $this->new_error_msg("Código de proveedor no válido.");      
       else if( strlen($this->autorizado_nombre) < 1 OR strlen($this->autorizado_nombre) > 120 )
         $this->new_error_msg("Nombre de autorizado no válido.");
       else
