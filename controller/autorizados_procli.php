@@ -41,11 +41,11 @@ class autorizados_procli extends fs_controller {
         $this->share_extension();
 
         /// ¿El usuario tiene permiso para eliminar autorizados?
-        $this->allow_delete = $this->user->allow_delete_on(__CLASS__);
-        
-        $this->autorizados = new autorizados();       
+        $this->allow_delete = $this->user->allow_delete_on(__CLASS__);      
 
         if (isset($_GET['tipo']) AND isset($_GET['cod'])) {
+            $this->autorizados = new autorizados(); 
+            
             /// añadir un autorizado para este proveedor o cliente
             if (isset($_POST['autorizado_nombre'])) {
                 if ($_GET['tipo'] == 'proveedor'){
@@ -79,13 +79,12 @@ class autorizados_procli extends fs_controller {
                 } else
                     $this->new_error_msg('Autorizado no encontrada.');
             }
-            //Si no hay nada mas enseñamos todo para este COD de proveedor o cliente
-            else {
-                if ($_GET['tipo']=='proveedor')
-                    $this->autorizados_select = $this->autorizados->get_autorizados_proveedor($_GET['cod']);
-                else
-                    $this->autorizados_select = $this->autorizados->get_autorizados_cliente($_GET['cod']);
-            }
+            
+            //Listamos todo para este COD de proveedor o cliente
+            if ($_GET['tipo']=='proveedor')
+                $this->autorizados_select = $this->autorizados->get_autorizados_proveedor($_GET['cod']);
+            else
+                $this->autorizados_select = $this->autorizados->get_autorizados_cliente($_GET['cod']);
         }
     }
 
