@@ -122,7 +122,7 @@ class autorizados extends fs_model
 
   public function get($id)
    {
-      $sql = "SELECT * FROM `".$this->table_name."` WHERE autorizado_id = " . $this->var2str($id) . ";";
+      $sql = "SELECT * FROM '".$this->table_name."' WHERE autorizado_id = " . $this->var2str($id) . ";";
         
       $data = $this->db->select($sql);
       
@@ -136,7 +136,7 @@ class autorizados extends fs_model
    {
       $autorizados_array = array();
         
-      $sql = "SELECT * FROM `".$this->table_name."` WHERE autorizado_codproveedor = " . $this->var2str($id) . " ORDER BY autorizado_nombre DESC;";
+      $sql = "SELECT * FROM ".$this->table_name." WHERE autorizado_codproveedor = " . $this->var2str($id) . " ORDER BY autorizado_nombre DESC;";
       
       $data = $this->db->select($sql);
       
@@ -152,7 +152,7 @@ class autorizados extends fs_model
    {
       $autorizados_array = array();
         
-      $sql = "SELECT * FROM `".$this->table_name."` WHERE autorizado_codcliente = " . $this->var2str($id) . " ORDER BY autorizado_nombre DESC;";
+      $sql = "SELECT * FROM ".$this->table_name." WHERE autorizado_codcliente = " . $this->var2str($id) . " ORDER BY autorizado_nombre DESC;";
       
       $data = $this->db->select($sql);
       
@@ -169,7 +169,7 @@ class autorizados extends fs_model
         if ($this->test()) {            
             if ($this->exists()) {
                 
-                $sql = "UPDATE `".$this->table_name."` SET autorizado_cifnif = " . $this->var2str($this->autorizado_cifnif) . ",
+                $sql = "UPDATE '".$this->table_name."' SET autorizado_cifnif = " . $this->var2str($this->autorizado_cifnif) . ",
                autorizado_nombre = " . $this->var2str($this->autorizado_nombre) . ", autorizado_telefono = " . $this->var2str($this->autorizado_telefono) . ",
                autorizado_concepto = " . $this->var2str($this->autorizado_concepto) . ", autorizado_fecha = " . $this->var2str($this->autorizado_fecha) . ",
                autorizado_codproveedor = " . $this->var2str($this->autorizado_codproveedor) . ", autorizado_codcliente = " . $this->var2str($this->autorizado_codcliente) . "
@@ -178,7 +178,7 @@ class autorizados extends fs_model
                 return $this->db->exec($sql);
                 
             } else {
-                $sql = "INSERT INTO `".$this->table_name."` (`autorizado_cifnif`, `autorizado_nombre`, `autorizado_telefono`, `autorizado_concepto`, `autorizado_fecha`, `autorizado_codproveedor`, `autorizado_codcliente`) 
+                $sql = "INSERT INTO '".$this->table_name."' ('autorizado_cifnif', 'autorizado_nombre', 'autorizado_telefono', 'autorizado_concepto', 'autorizado_fecha', 'autorizado_codproveedor', 'autorizado_codcliente') 
                VALUES (" . $this->var2str($this->autorizado_cifnif) . "," . $this->var2str($this->autorizado_nombre) . ",
                " . $this->var2str($this->autorizado_telefono) . "," . $this->var2str($this->autorizado_concepto) . "," . $this->var2str($this->autorizado_fecha) . ",
                " . $this->var2str($this->autorizado_codproveedor) . "," . $this->var2str($this->autorizado_codcliente) . ");";
@@ -198,4 +198,3 @@ class autorizados extends fs_model
        return $this->db->exec("DELETE FROM ".$this->table_name." WHERE autorizado_id = ".$this->var2str($this->autorizado_id).";");
    }   
 }
-
